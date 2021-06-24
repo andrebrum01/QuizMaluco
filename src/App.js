@@ -115,7 +115,7 @@ class App extends Component {
 
     for (let i=0;i<this.quest.length;i++){
       if(this.quest[i].resp === state.valueList[i]) acertos++
-    })
+    }
 
     state.end=true;
     state.acertos=acertos;

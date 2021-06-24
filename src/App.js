@@ -113,8 +113,8 @@ class App extends Component {
   endQuiz(state){
     let acertos=0;
 
-    this.quest.map((item,i)=>{
-      if(item.resp === state.valueList[i]) acertos++
+    for (let i=0;i<this.quest.length;i++){
+      if(this.quest[i].resp === state.valueList[i]) acertos++
     })
 
     state.end=true;

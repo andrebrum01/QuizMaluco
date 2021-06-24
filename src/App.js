@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {Home,Progressbar} from './appStyled';
+
 import Question from './Components/Question';
+import WelcomeDiv from './Components/WelcomeDiv';
+import ResultDiv from './Components/ResultDiv';
 
 class App extends Component {
   constructor(props){
@@ -8,100 +11,160 @@ class App extends Component {
 
     this.quest=[
       {
-        tema:"Sobre mim!",
-        answer:"Qual meu segundo nome?",
-        alternative:["André","Brum","Cortez","Ferreira"],
-        key:1
+        tema:"O quanto você conhece o neymar?",
+        answer:"Quantos anos o craque neymar tem? (19/04/2020)",
+        alternative:[
+          "28 anos",
+          "25 anos",
+          "24 anos",
+        ],
+        resp:"28 anos"
       },{
-        tema:"Sobre mim!",
-        answer:"Qual meu asd nome?",
-        alternative:["André","Brum","Cortez","Ferreira"],
-        key:2
+        tema:"O quanto você conhece o neymar?",
+        answer:"Qual foi o ano que o neymar conquistou sua primeira libertadores pelo santos?",
+        alternative:[
+          "2011",
+          "2012",
+          "2010",
+        ],
+        resp:"2011"
       },{
-        tema:"Sobre mim!",
-        answer:"Qual meu sdf nome?",
-        alternative:["André","Brum","Cortez","Ferreira"],
-        key:3
+        tema:"O quanto você conhece o neymar?",
+        answer:"Qual é o nome do filho do neymar?",
+        alternative:[
+          "João Pedro",
+          "Davi Lucca",
+          "Mateus Neymar Jr Jr",
+          "Nego Ney"
+        ],
+        resp:"Davi Lucca"
       },{
-        tema:"Sobre mim!",
-        answer:"Qual meu ertert nome?",
-        alternative:["André","Brum","Cortez","Ferreira"],
-        key:4
+        tema:"O quanto você conhece o neymar?",
+        answer:"Em que ano o neymar foi para o barça?",
+        alternative:[
+          "2013",
+          "2015",
+          "Nunca foi pro Barça",
+          "2012"
+        ],
+        resp:"2013"
       },{
-        tema:"Sobre mim!",
-        answer:"Qual meu hsdsfe nome?",
-        alternative:["André","Brum","Cortez","Ferreira"],
-        key:5
-      },
+        tema:"O quanto você conhece o neymar?",
+        answer:"Em que ano o neymar fez sua estreia pela seleção?",
+        alternative:[
+          "2009",
+          "2010",
+          "Brasil sempre teve Neymar",
+          "2008",
+          "2020"
+        ],
+        resp:"2009"
+      },{
+        tema:"O quanto você conhece o neymar?",
+        answer:"Quantas champions o neymar tem? (19/04/2020)",
+        alternative:[
+          "4",
+          "1",
+          "0, ele não tem",
+          "2",
+        ],
+        resp:"1"
+      }
     ];
     
     this.state={
       atual:0,
       max:this.quest.length,
-      valueList:[]
+      valueList:[],
+      start: false,
+      end:false,
+      acertos:0,
     }
 
-    this.question;
+    this.question=[];
 
     this.nextQuestion = this.nextQuestion.bind(this);
-
+    this.startQuiz = this.startQuiz.bind(this);
+    this.endQuiz = this.endQuiz.bind(this);
+    
   }
 
-  async nextQuestion(e, value){
+
+  nextQuestion(e, value){
     e.preventDefault();
     let state = this.state;
-    if(state.atual<state.max){
+    if(state.atual+1<state.max){
       state.atual++;
-      state.valueList.push(value);
-
-      const glassDiv = e.target.parentNode.parentNode;
-      await glassDiv.animate([
-        {
-          opacity: '1',
-          transform: 'scale(1)'
-        },
-        {
-          opacity:'0',
-          transform: 'scale(0)'
-        },
-        {
-          opacity: '1',
-          transform: 'scale(1)'
-        },
-      ],
-      {
-        duration: 1500, 
-        fill: 'forwards',
-        easing:'ease-in-out'
-      });
-      this.setState(state);
+      state.valueList.push(value);      
     }
-    console.log(this.state);
+    else if(state.atual+1===state.max){
+      state.atual++;
+      state.valueList.push(value);      
+      state = this.endQuiz(state);
+    }
+    this.setState(state);      
+  }
+
+  startQuiz(e){
+    e.preventDefault();
+    this.setState(...this.state,{start:!this.state.start})
+  }
+
+  endQuiz(state){
+    let acertos=0;
+
+    this.quest.map((item,i)=>{
+      if(item.resp === state.valueList[i]) acertos++
+    })
+
+    state.end=true;
+    state.acertos=acertos;
+
+    console.log(state.valueList);
+    return state;
   }
 
   render(){
+    let glass = 'glass';
+    if (!this.state.start || this.state.end) {
+      glass += ' center';
+    }
 
-    this.question = this.quest.map(item=>{
+    this.question = this.quest.map((item,i)=>{
       return  <Question
                 tema={item.tema}
                 quest={item.answer}
                 args={item.alternative}
                 events={this.nextQuestion}
-                key={item.key}
+                key={i}
               />
     });
 
     return (
       <Home>
-        <Progressbar
-          atual={this.state.atual+1}
-          max={this.state.max}
+        {this.state.start && 
+          <Progressbar
+            atual={this.state.atual}
+            max={this.state.max}
+          >
+            <div className="progress"/>
+            <div className="status">{this.state.atual} de {this.state.max} Resolvidos</div>
+          </Progressbar>
+        }
+        <div 
+          className={glass} 
         >
-          <div className="progress"/>
-          <div className="status">{this.state.atual+1} de {this.state.max} Resolvidos</div>
-        </Progressbar>
-        <div className="glass">
-         {this.question[this.state.atual]}
+         {!this.state.end?this.state.start?
+            this.question[this.state.atual]
+            :
+            <WelcomeDiv
+              startQuiz={this.startQuiz}
+            />
+            :<ResultDiv
+              acertos={this.state.acertos}
+              max={this.state.max}
+            />
+         }
         </div>
         <div className="circle cl1"/>
         <div className="circle cl2"/>

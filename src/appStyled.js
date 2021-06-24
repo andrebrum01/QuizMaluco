@@ -12,11 +12,47 @@ const fadeDown = keyframes`
   }
 `;
 
+const moveX = keyframes`
+  0% {
+    transform: translateX(2rem);
+  }
+
+  50% {
+    transform: translateX(-2rem);
+  }
+  100%{
+    transform: translateX(2rem);
+  }
+`;
+
+const moveY = keyframes`
+  0% {
+    transform: translateY(1rem);
+  }
+
+  50% {
+    transform: translateY(-1rem);
+  }
+  100%{
+    transform: translateY(1rem);
+  }
+`;
+
+
+    
+  
+
+
 // const primaryColor = "#b3dee2";
 
 const redColor = "#E27396";
 
 // const secondaryColor = "#EAF2D7";
+
+// const shadow= "#533d4a";
+
+
+
 
 
 export const Home = styled.section`
@@ -36,9 +72,10 @@ export const Home = styled.section`
 
     .glass{
         min-height:80vh;
-        min-width: 80vw;
+        width: 80vw;
         border-radius: 1rem;
         margin-top: 1rem;
+        margin-bottom: 2rem;
 
         animation: ${fadeDown} .5s forwards;
 
@@ -48,6 +85,14 @@ export const Home = styled.section`
         z-index: 2;
 
         border:rgba(255,255,255,.35) 2px solid;
+        position:relative;
+    }
+
+    .center{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin:auto;
     }
 
     .circle{
@@ -62,6 +107,8 @@ export const Home = styled.section`
         top: 3rem;
         right: 2.5rem;
         z-index: 1;
+        animation: ${moveY} 12s forwards infinite;
+
     }
     .cl2{
         height: 15rem;
@@ -69,9 +116,12 @@ export const Home = styled.section`
         bottom: 5rem;
         left: 3rem;
         z-index: 1;
+        animation: ${moveX} 15s forwards infinite;
     }
 
 `;
+
+
 
 export const Progressbar = styled.div.attrs(props => ({
     tam : props.atual / props.max*100,
@@ -84,6 +134,7 @@ export const Progressbar = styled.div.attrs(props => ({
         height: 5px;
         top:0px;
         left: 0px;
+        transition: 1s ease-in-out;
     }
     .status{
         margin: 1rem 2rem ;

@@ -33,9 +33,45 @@ class Question extends Component {
     this.setState(state);
   }
 
+  componentDidMount() {
+    const glassDiv = document.querySelector('.glass');
+      glassDiv.animate([
+        {
+          opacity: '0',
+        },
+        {
+          opacity:'1',
+        }
+      ],
+      {
+        duration: 1000, 
+        fill: 'forwards',
+        easing:'ease-in-out'
+      });
+  }
+
+  componentWillUnmount() {
+    const glassDiv = document.querySelector('.glass');
+      glassDiv.animate([
+        {
+          opacity: '1',
+        },
+        {
+          opacity:'0',
+        }
+      ],
+      {
+        duration: 1000, 
+        fill: 'forwards',
+        easing:'ease-in-out'
+      });
+  }
+  
+  
+
   render(){
     return (
-      <Container>
+      <Container className="container">
         <Title>
             {this.props.tema}
         </Title>
@@ -65,6 +101,7 @@ class Question extends Component {
         <button onClick={this.validation}>Responder</button>
       </Container>
     );
+
   }
 }
 

@@ -1,9 +1,13 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr auto;
+    row-gap: 20px;
     flex-direction: column;
     justify-content: space-between;
+    align-content: center;
     width: 100%;
     height: 100%;
 
@@ -42,7 +46,7 @@ export const Title = styled.div`
 `;
 export const Quest = styled.div`
     padding: 15px;
-    margin: 0px auto;
+    margin: 1rem auto;
     text-align: center;
     font-size: 1.15rem;
     font-weight: 400;
@@ -50,7 +54,7 @@ export const Quest = styled.div`
 
 `;
 export const Altenative = styled.div`
-    padding: 10px 15px;
+    padding: 0px 2rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -70,6 +74,44 @@ export const Altenative = styled.div`
 
         input[type="radio"]{
             margin-right: 15px;
+            :after {
+                width: 15px;
+                height: 15px;
+                border-radius: 15px;
+                top: -2px;
+                left: -1px;
+                position: relative;
+                background-color: #d1d3d1;
+                content: '';
+                display: inline-block;
+                visibility: visible;
+                border: 2px solid white;
+            }
+
+            :checked{
+                :after{
+                    width: 15px;
+                    height: 15px;
+                    border-radius: 15px;
+                    top: -2px;
+                    left: -1px;
+                    position: relative;
+                    background-color: #81c9cf;
+                    content: '';
+                    display: inline-block;
+                    visibility: visible;
+                    border: 2px solid white;
+                }
+            }
+        }
+
+
+        :focus-within{
+            transform: scale(1.05);
+            background-color: rgba(245,245,245,.9);
+        }
+        :hover{
+            background-color: rgba(245,245,245,.9);
         }
     }
 
